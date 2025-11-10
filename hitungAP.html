@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="cont-1" id="cont-1">
+      <h1>JUMLAH AP: <span id="jumlah"></span></h1>
+      <div class="cont-2">
+        <input type="number" id="bb" />
+        <h1>,</h1>
+        <input type="number" id="bd" />
+      </div>
+      <button class="submit" onclick="t()">ENTER</button>
+      <button class="submits" id="submits" onclick="show()"><</button>
+    </div>
+    <div class="answer hidden" id="answer">
+      <p id="final"></p>
+    </div>
+  </body>
+</html>
+
+<script>
+  function t() {
+    let answer = 0;
+    let answer2 = [];
+    let answer3 = [];
+    let bb = Array.from(document.getElementById("bb").value);
+    let bd = Array.from(document.getElementById("bd").value);
+    let merge = bb.concat(bd);
+    if (bd == "") {
+      console.log("a");
+      // check aturan 1
+      for (let i = 0; i < bb.length; i++) {
+        if (bb[i] != 0) {
+          answer += 1;
+          answer2.push("yes");
+          answer3.push([bb[i], `${bb[i]} adalah AP karena bukan 0`]);
+        }
+        if (bb[i] == 0) {
+          answer2.push("no");
+          answer3.push([bb[i], `${bb[i]} bukan AP karena 0`]);
+        }
+      }
+
+      // check aturan 2
+      let checkend;
+      let checkstart;
+      for (let i = bb.length - 1; i >= 0; i--) {
+        if (bb[i] != 0) {
+          checkend = i;
+          break;
+        }
+      }
+      for (let i = 0; i < bb.length; i++) {
+        if (bb[i] != 0) {
+          checkstart = i;
+          break;
+        }
+      }
+      for (let i = checkstart; i < checkend; i++) {
+        if (bb[i] == 0) {
+          answer += 1;
+          answer2[i] = "yes";
+          answer3[i] = [
+            bb[i],
+            `${bb[i]} adalah AP karena diantara 2 angka bukan 0`,
+          ];
+        }
+      }
+      console.log(checkstart);
+      console.log(checkend);
+      console.log(answer);
+      console.log(answer2);
+      console.log(answer3);
+    } else {
+      // check aturan 1
+      let rush;
+      for (let i = 0; i < merge.length; i++) {
+        if (merge[i] != 0) {
+          rush = "active";
+          answer += 1;
+          answer2.push("yes");
+          answer3.push([merge[i], `${merge[i]} adalah AP karena bukan 0`]);
+        }
+        if (merge[i] == 0 && rush != "active") {
+          answer2.push("yes");
+          answer3.push([
+            merge[i],
+            `${merge[i]} bukan AP karena disebelah kiri angka bukan 0`,
+          ]);
+        }
+
+        if (merge[i] == 0 && rush == "active") {
+          answer += 1;
+          answer2.push("no");
+          answer3.push([
+            merge[i],
+            `${merge[i]} adalah AP karena disebelah angka bukan 0 & ada desimal`,
+          ]);
+        }
+      }
+      let checkend;
+      let checkstart;
+      for (let i = merge.length - 1; i >= 0; i--) {
+        if (merge[i] != 0) {
+          checkend = i;
+          break;
+        }
+      }
+      for (let i = 0; i < merge.length; i++) {
+        if (merge[i] != 0) {
+          checkstart = i;
+          break;
+        }
+      }
+      for (let i = checkstart; i < checkend; i++) {
+        if (merge[i] == 0) {
+          answer2[i] = "yes";
+          answer3[i] = [
+            merge[i],
+            `${merge[i]} adalah AP karena diantara 2 angka bukan 0`,
+          ];
+        }
+      }
+    }
+
+    document.getElementById("jumlah").innerHTML = answer;
+    let final = "";
+    for (let i = 0; i < answer3.length; i++) {
+      final += i + 1 + ". " + answer3[i][1] + "<br>";
+    }
+    document.getElementById("final").innerHTML = final;
+  }
+
+  let off = true;
+  function show() {
+    document.getElementById("cont-1").classList.toggle("after");
+    document.getElementById("answer").classList.toggle("hidden");
+    if (off) {
+      document.getElementById("submits").innerHTML = ">";
+      off = false;
+    } else {
+      document.getElementById("submits").innerHTML = "<";
+      off = true;
+    }
+  }
+</script>
+
+<style>
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+  }
+
+  .cont-1 {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: width 0.5s ease-in-out;
+  }
+
+  .cont-2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cont-2 input {
+    height: 50px;
+    font-size: 40px;
+    margin: 30px;
+  }
+
+  .answer {
+    border: 1px black solid;
+    height: 100%;
+    width: 30%;
+    padding: 10px;
+  }
+
+  #bb {
+    text-align: right;
+  }
+
+  .cont-2 input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .cont-2 h1 {
+    font-size: 100px;
+  }
+
+  .submit {
+    background: green;
+    color: white;
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 30px;
+  }
+
+  .submits {
+    position: absolute;
+    background: black;
+    color: white;
+    border: 0;
+    border-radius: 10px;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 30px;
+    top: 10px;
+    right: 15px;
+  }
+
+  .submit:hover {
+    background: rgb(0, 99, 0);
+    color: white;
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 20px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .after {
+    width: 70%;
+  }
+</style>
